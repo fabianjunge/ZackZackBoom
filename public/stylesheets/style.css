@@ -9,7 +9,16 @@ body h1 {
   margin: 0;
   padding: 0;
 }
-body .button {
+body #content .bomb {
+  margin-top: 5%;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+body #content .bomb img {
+  width: 300px;
+}
+body #content .button {
   position: fixed;
   bottom: 5%;
   left: 50%;
@@ -23,10 +32,10 @@ body .button {
   /* Safari */
 
 }
-body .button:hover {
+body #content .button:hover {
   border: solid #ecf0f1;
 }
-body .button a {
+body #content .button a {
   color: white;
   text-decoration: none;
   text-transform: uppercase;
