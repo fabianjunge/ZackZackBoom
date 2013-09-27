@@ -1,6 +1,37 @@
 body {
+  background-color: #e74c3c;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px -apple-system-font, "Helvetica Neue", "Helvetica", sans-serif;
+}
+body h1 {
+  line-height: em(44);
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+body .button {
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  width: 280px;
+  background-color: #af291b;
+  text-align: center;
+  padding: 20px;
+  border: solid transparent;
+  margin-left: -165px;
+  -webkit-transition: border-color 0.2s;
+  /* Safari */
+
+}
+body .button:hover {
+  border: solid #ecf0f1;
+}
+body .button a {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  font-size: 1.2em;
 }
 a {
   color: #00B7FF;
