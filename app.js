@@ -30,6 +30,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.intro);
+app.get('/index', routes.index);
+
 // app.get('/socket', routes.socket);
 
 var connections = [];
@@ -49,8 +51,17 @@ io.sockets.on('connection', function (socket) {
 		  console.log("An Socket " + i + "gesendert, dass er explodieren soll.");
 	  }
   });
-  
+
+  socket.on('disconnect', function () {
+    for (var i = 0; i < connections.length; i++) {
+      if (socket == connections[i]) {
+        connections.splice[i];
+        console.log("disconnect");
+      }
+    }
+  });
 });
+
 
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
