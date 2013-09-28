@@ -82,9 +82,9 @@ io.sockets.on('connection', function (socket) {
   // process bomb throws
   socket.on('throwBomb', function () {
     console.log("throwBomb " + socket.id );
-    var victim = getRandomConnectionExceptMe(socket);
-    bombs[0].handlerId = victim.id;
-    victim.emit('caughtBomb');
+    var victim = getRandomPlayerExceptMe(socket);
+    bombs[0].handlerId = victim.socket.id;
+    victim.socket.emit('caughtBomb');
     socket.emit('lostBomb');
   });
 
@@ -139,19 +139,13 @@ var getSocketById = function(id) {
   return connections[getSocketNrById(id)];
 }
 
-var getRandomConnectionExceptMe = function(socket) {
-  var victim_nr = randomFromMinMax(0,(connections.length - 1) - 1);
-  var myNr = getSocketNrById(socket.id);
+var getRandomPlayerExceptMe = function(socket) {
+  var victim_nr = randomFromMinMax(0,(players.length - 1) - 1);
+  var myNr = getPlayerNrById(socket.id);
   console.log('myNr: ' + myNr);
   if (victim_nr >= myNr) { victim_nr = victim_nr + 1;};
   console.log('victim_nr: ' + victim_nr);
-  //var newArray = getConnectionsWithoutMe(socket);
-  return connections[victim_nr];
-}
-
-var getConnectionsWithoutMe = function(my_socket) {
-  var nr = getSocketNrById(my_socket.id);
-  return connections.slice(0,nr).concat(connections.slice(nr,-1));
+  return players[victim_nr];
 }
 
 var randomFromMinMax = function(min, max) {
