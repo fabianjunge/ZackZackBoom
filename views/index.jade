@@ -4,8 +4,9 @@ block content
 	#login_overlay
 		h2 Please Log In
 		.login_form
-			input(type='text',class='loginname',placeholder='Your Name')
-			input(type='submit',class='submit',value='Submit')
+			form(action='javascript:return false')
+				input(type='text',class='loginname',placeholder='Your Name')
+				input(type='submit',class='submit',value='Submit')
 	#stats
 		.player
 			p 0
