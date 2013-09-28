@@ -75,7 +75,7 @@ body {
 			height: 8%;
 			float: left;
 			background-position-x: 85%;
-			//background-position-y: 30px;
+			background-position-y: 3px;
 			@media (min-width: 700px) {
 						background-size: 60%;
 						width: 10%;
@@ -87,6 +87,7 @@ body {
 				font-size: 3em;
 				float: left;
 				margin-top: 30%;
+				-webkit-user-select: none;
 			}
 		}
 
@@ -94,6 +95,7 @@ body {
 			background-image: url(../graphics/bomb.svg);
 			background-repeat: no-repeat;
 			background-size: 50%;
+			background-position-y: 2px;
 			margin: 2%;
 			width: 29%;
 			height: 8%;
@@ -108,6 +110,7 @@ body {
 				font-size: 3em;
 				float: right;
 				margin-top: 30%;
+				-webkit-user-select: none;
 			}
 		}
 	}
@@ -163,17 +166,25 @@ body {
 			border-color: transparent;
 			-webkit-transition: background-color 0.2s;
 			padding-top: 23px;
+			@media screen and (max-height: 430px) {
+						height: 10px;
+						padding-top: 8px;
+					}
 			//-webkit-transform: scale(2);
 			/*&:hover {
 						background-color: @red;
 					}*/
 			a {
 				color: @red;
+				-webkit-user-select: none;
 				text-decoration: none;
 				text-transform: uppercase;
 				letter-spacing: .2em;
-				font-size: 1.8em;
+				font-size: 1.5em;
 				font-weight: bold;
+				@media screen and (max-height: 430px) {
+						font-size: 1.3em;
+					}
 				/*&:hover {
 					color: @cloud;
 				}*/
