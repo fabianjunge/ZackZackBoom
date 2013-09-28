@@ -1,14 +1,22 @@
 extends layout
 
 block content
-	h1= Auto Deploy
+	#login_overlay
+		h2 Please Log In
+		.login_form
+			input(type='text',class='loginname')
+			input(type='submit',class='submit')
 	#stats
 		.player
-			p 4
+			p 0
 		.bomb
-			p 2
+			p 0
 	#content
 		.bomb
 			img(src = 'http://trenchreynolds.me/wp-content/uploads/bomb.png')
-		.button
-			a(href='#') Weiterwerfen
+		.nobomb
+			p Player 1 has the Bomb
+		.button_active
+			a(href='#') Throw Bomb!
+		.button_inactive
+			a(href='#') Wait!
