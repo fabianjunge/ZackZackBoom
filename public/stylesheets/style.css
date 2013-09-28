@@ -17,31 +17,36 @@ body #stats {
 body #stats .player {
   background-image: url(../graphics/player.svg);
   background-repeat: no-repeat;
-  width: 100px;
-  height: 35px;
-  background-size: 30%;
+  background-size: 50%;
+  margin: 2%;
+  width: 30%;
+  height: 300px;
   float: left;
+  background-position-x: 135px;
+  background-position-y: 30px;
 }
 body #stats .player p {
-  padding-left: 40px;
-  line-height: 0em;
+  line-height: 0.0em;
   color: white;
-  font-size: 1.3em;
+  font-size: 10em;
+  float: left;
+  margin-top: 35%;
 }
 body #stats .bomb {
   background-image: url(../graphics/bomb.svg);
   background-repeat: no-repeat;
-  background-size: 50%;
+  background-size: 65%;
   margin: 2%;
-  width: 30%;
-  height: 120%;
+  width: 29%;
+  height: 300px;
   float: right;
 }
 body #stats .bomb p {
-  padding-left: 40px;
-  line-height: 0.4em;
+  line-height: 0.0em;
   color: white;
-  font-size: 1.3em;
+  font-size: 10em;
+  float: right;
+  margin-top: 35%;
 }
 body #content .bomb {
   margin-top: 5%;
@@ -56,25 +61,30 @@ body #content .button {
   position: fixed;
   bottom: 5%;
   left: 50%;
-  width: 280px;
-  background-color: #af291b;
+  width: 700px;
+  height: 90px;
+  background-color: #ecf0f1;
+  border: none;
   text-align: center;
   padding: 20px;
-  border: solid transparent;
-  margin-left: -165px;
-  -webkit-transition: border-color 0.2s;
-  /* Safari */
+  margin-left: -370px;
+  -webkit-transition: background-color 0.2s;
+  padding-top: 60px;
+  /*&:hover {
+						background-color: @red;
+					}*/
 
 }
-body #content .button:hover {
-  border: solid #ecf0f1;
-}
 body #content .button a {
-  color: white;
+  color: #e74c3c;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: .3em;
-  font-size: 1.2em;
+  font-size: 3em;
+  /*&:hover {
+					color: @cloud;
+				}*/
+
 }
 a {
   color: #00B7FF;
