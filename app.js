@@ -29,8 +29,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/socket', routes.socket);
+app.get('/', routes.intro);
+// app.get('/socket', routes.socket);
 
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
