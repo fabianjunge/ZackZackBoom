@@ -55,8 +55,8 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function () {
     for (var i = 0; i < connections.length; i++) {
       if (socket == connections[i]) {
-        connections.splice[i];
-        console.log("disconnect");
+        connections.splice(i);
+        console.log("disconnect " + socket);
       }
     }
   });

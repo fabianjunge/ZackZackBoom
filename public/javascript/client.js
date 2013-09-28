@@ -1,4 +1,4 @@
-var socket = io.connect('http://192.168.2.135:3000');
+var socket = io.connect('http://localhost:3000');
 
 socket.on('bombe', function (data) {
   console.log("Explodiere!");
@@ -9,6 +9,9 @@ socket.on('bombe', function (data) {
 
 socket.on('info', function (data) {
   console.log("Player: " + data.connections_cnt + ", Bombs: " + data.bombs_cnt);
+  
+  $("#stats .player p").text(data.connections_cnt);
+  $("#stats .bomb p").text(data.bombs_cnt);
 })
 
 createjs.Sound.setMute(false);
