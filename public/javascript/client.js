@@ -1,6 +1,13 @@
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://192.168.2.135:3000');
+var tickloop;
 
 function gotBomb() {
+  tickloop = createjs.Sound.play("tick");
+  tickloop.setMute(false);
+  tickloop.volume = 0.5;
+  tickloop.addEventListener("complete", function (event) {
+      tickloop.play();
+  });
   $(".bomb").show();
   $(".nobomb").hide();
   $(".button_active").show();
@@ -8,6 +15,8 @@ function gotBomb() {
 };
 
 function lostBomb() {
+  tickloop.removeAllEventListeners("complete");
+  
   $(".bomb").hide()
   $(".nobomb").show()
   $(".button_active").hide()
@@ -39,13 +48,20 @@ socket.on('caughtBomb', function () {
 
 createjs.Sound.setMute(false);
 createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
+createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
+createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
 
 $(document).ready( function() {
   $(".button_active").click( function() {
-    //var instance = createjs.Sound.play("boom");
-    //instance.setMute(false);
-    //instance.volume = 0.5;
+    var instance = createjs.Sound.play("tick");
+    instance.setMute(false);
+    instance.volume = 0.5;
     socket.emit('throwBomb');
     console.log('sent throwBomb')
   });
+  
+  $(".submit").click( function() {
+    $(".login_overlay").fadeOut();
+    socket.emit('register', { name: "Franz", email: "franz@aol.de"} );
+  })
 });
