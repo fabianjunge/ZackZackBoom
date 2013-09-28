@@ -44,6 +44,7 @@ socket.on('info', function (data) {
   console.log("Players/Connections: " + data.players_cnt + "/" + data.connections_cnt + ", Bombs: " + data.bombs_cnt + ", TTL: " + data.bombs_ttl + ", Holder: " + data.bomb_holder);
   $("#stats .player p").text(data.connections_cnt);
   $("#stats .bomb p").text(data.bombs_cnt);
+  $("#content .nobomb p").text(data.bomb_holder + " has the bomb");
 });
 
 socket.on('lostBomb', function () {
