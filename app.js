@@ -32,11 +32,24 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/socket', routes.socket);
 
+var connections = [];
+var bombs = [];
+
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  connections.push(socket);
+  
+  setInterval(function(){
+    socket.emit('info', { connections_cnt: connections.length, bombs_cnt: bombs.length});
+  }, 2000);
+  
+  socket.on('explodiere', function (data) {
+      // Broadcast explodiere
+	  for (var i = 0; i < connections.length; i++) {
+		  connections[i].emit('bombe', { hello: 'world' });
+		  console.log("An Socket " + i + "gesendert, dass er explodieren soll.");
+	  }
   });
+  
 });
 
 server.listen(app.get('port'), function(){
