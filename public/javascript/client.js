@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect();
 
 createjs.Sound.setMute(false);
 createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
@@ -19,7 +19,7 @@ function gotBomb() {
 };
 
 function lostBomb() {
-  tickloop.removeAllEventListeners("complete");
+  tickloop.removeEventListener("complete");
   
   $(".bomb").hide()
   $(".nobomb").show()
