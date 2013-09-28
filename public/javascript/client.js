@@ -31,6 +31,12 @@ function lostBomb() {
   $(".button_inactive").show()
 };
 
+function registerName() {
+  $("#login_overlay").fadeOut();
+  socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
+  console.log($(".loginname").val());
+}
+
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
@@ -64,9 +70,13 @@ $(document).ready( function() {
     console.log('sent throwBomb')
   });
   
+  $("#login_overlay").on('onkeydown',"input.loginname", function (e) {
+    if (e.keyCode == 13) {
+      registerName();
+    }
+  });
+
   $(".submit").click( function() {
-    $("#login_overlay").fadeOut();
-    socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
-    console.log($(".loginname").val());
+    registerName();
   })
 });

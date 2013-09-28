@@ -57,7 +57,7 @@ io.sockets.on('connection', function (socket) {
 
   // register players, if the player is not already registered
   socket.on('register', function (data) {
-    player = getPlayerBySocket(socket);
+    var player = getPlayerBySocket(socket);
     if (player === undefined) {
       player = new Player(data.name, data.email, socket)
       players.push(player);
@@ -91,7 +91,7 @@ setInterval(function(){
   if(bombs.length > 0) {
     bombs[0].ttl = bombs[0].ttl - 1;
     bomb_ttl = bombs[0].ttl;
-    bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId));
+    var bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId));
     if (bomb_holder !== undefined) {
       bomb_holder_name = bomb_holder.name;
     } else {
@@ -121,9 +121,10 @@ var removePlayerBySocketId = function(id) {
   var pNr = getPlayerNrById(id);
   if (pNr !== undefined) {
     // check if Player has bomb, if so move it
-    if (bombs[0].handlerId === id) {
+    if (bombs.length > 0 && bombs[0].handlerId === id) {
       moveBomb(getSocketById(id));
     }
+    var player = players[pNr];
     players.splice(pNr,1);
     console.log('Player "' + player.name + '" was removed.');
   }
