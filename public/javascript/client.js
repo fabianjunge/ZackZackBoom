@@ -3,15 +3,18 @@ var socket = io.connect('http://localhost:3000');
 createjs.Sound.setMute(false);
 createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
 createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
+createjs.Sound.registerSound("/sounds/click.mp3", "click");
 
-var tickloop = createjs.Sound.play("tick");
+
+var tickloop = createjs.Sound.createInstance("tick");
+tickloop.addEventListener("complete", function (event) {
+    tickloop.play();
+});
+tickloop.setMute(false);
+tickloop.volume = 0.5;
 
 function gotBomb() {
-  tickloop.setMute(false);
-  tickloop.volume = 0.5;
-  tickloop.addEventListener("complete", function (event) {
-      tickloop.play();
-  });
+  tickloop.play();
   $(".bomb").show();
   $(".nobomb").hide();
   $(".button_active").show();
@@ -19,8 +22,7 @@ function gotBomb() {
 };
 
 function lostBomb() {
-  tickloop.removeAllEventListeners("complete");
-  
+  tickloop.pause();
   $(".bomb").hide()
   $(".nobomb").show()
   $(".button_active").hide()
@@ -52,7 +54,7 @@ socket.on('caughtBomb', function () {
 
 $(document).ready( function() {
   $(".button_active").click( function() {
-    var instance = createjs.Sound.play("tick");
+    var instance = createjs.Sound.play("click");
     instance.setMute(false);
     instance.volume = 0.5;
     socket.emit('throwBomb');
