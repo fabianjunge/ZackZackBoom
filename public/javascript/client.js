@@ -61,7 +61,7 @@ $(document).ready( function() {
   
   $(".submit").click( function() {
     $("#login_overlay").fadeOut();
-    socket.emit('register', { name: $(".loginname").text() , email: "franz@aol.de"} );
-    console.log($(".loginname").text());
+    socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
+    console.log($(".loginname").val());
   })
 });
