@@ -20,7 +20,6 @@ function gotBomb() {
 
 function lostBomb() {
   tickloop.removeAllEventListeners("complete");
-  
   $(".bomb").hide()
   $(".nobomb").show()
   $(".button_active").hide()
@@ -37,7 +36,7 @@ socket.on('explodeBomb', function (data) {
 });
 
 socket.on('info', function (data) {
-  console.log("Player: " + data.connections_cnt + ", Bombs: " + data.bombs_cnt + ", TTL: " + data.bombs_ttl + ", Holder: " + data.bomb_holder);
+  console.log("Players/Connections: " + data.players_cnt + "/" + data.connections_cnt + ", Bombs: " + data.bombs_cnt + ", TTL: " + data.bombs_ttl + ", Holder: " + data.bomb_holder);
   $("#stats .player p").text(data.connections_cnt);
   $("#stats .bomb p").text(data.bombs_cnt);
 });
