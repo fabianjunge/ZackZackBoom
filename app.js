@@ -54,9 +54,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     for (var i = 0; i < connections.length; i++) {
-      if (socket == connections[i]) {
-        connections.splice(i);
-        console.log("disconnect " + socket);
+      //console.log(socket);
+      if (socket.id == connections[i].id) {
+        connections.splice(i, 1);
+        console.log("disconnect " + socket.id );
       }
     }
   });
