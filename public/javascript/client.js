@@ -1,8 +1,12 @@
-var socket = io.connect('http://192.168.2.135:3000');
-var tickloop;
+var socket = io.connect('http://localhost:3000');
+
+createjs.Sound.setMute(false);
+createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
+createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
+
+var tickloop = createjs.Sound.play("tick");
 
 function gotBomb() {
-  tickloop = createjs.Sound.play("tick");
   tickloop.setMute(false);
   tickloop.volume = 0.5;
   tickloop.addEventListener("complete", function (event) {
@@ -46,11 +50,6 @@ socket.on('caughtBomb', function () {
   gotBomb();
 });
 
-createjs.Sound.setMute(false);
-createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
-createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
-createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
-
 $(document).ready( function() {
   $(".button_active").click( function() {
     var instance = createjs.Sound.play("tick");
@@ -61,7 +60,7 @@ $(document).ready( function() {
   });
   
   $(".submit").click( function() {
-    $(".login_overlay").fadeOut();
+    $("#login_overlay").fadeOut();
     socket.emit('register', { name: "Franz", email: "franz@aol.de"} );
   })
 });
