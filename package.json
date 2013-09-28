@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "ZackZackBoom",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,5 +10,9 @@
     "jade": "*",
     "less-middleware": "*",
     "socket.io": "*"
+  },
+  "subdomain": "zackzackboom",
+  "engines": {
+    "node": "0.10.x"
   }
 }

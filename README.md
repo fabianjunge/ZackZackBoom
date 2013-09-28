@@ -9,3 +9,10 @@ Status
 -------
 In development at the BremenHack 2013 from 27. to 29. September.
 
+STAGING
+--------
+
+Automaticly deploy to nodejitsu
+
+check http://zackzackboom.nodejitsu.com/
+
