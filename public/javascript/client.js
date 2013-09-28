@@ -1,4 +1,4 @@
-var socket = io.connect('http://192.168.2.135:3000');
+var socket = io.connect('http://192.168.2.172:3000');
 
 socket.on('bombe', function (data) {
   console.log("Explodiere!");
