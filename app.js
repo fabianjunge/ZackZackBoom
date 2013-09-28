@@ -29,26 +29,25 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.intro);
+app.get('/', routes.index);
 app.get('/index', routes.index);
 
 // app.get('/socket', routes.socket);
 
 var connections = [];
+var players = [];
 var bombs = [];
+
+function Player(name, email, socket) {
+  this.name = name;
+  this.email = email;
+  this.socket = socket;
+}
 
 io.sockets.on('connection', function (socket) {
   connections.push(socket);
 
-  // create bomb if more then two players are connected and we don't have one already
-  if(connections.length > 1 && bombs.length == 0) {
-    var ttl = 20 //Math.floor(Math.random()*100)
-    bombs.push({id: bombs.length, ttl: ttl, handlerId: socket.id })
-    socket.emit('caughtBomb');
-  } else {
-    socket.emit('lostBomb');
-  }
-
+  // handle disconnects
   socket.on('disconnect', function () {
     for (var i = 0; i < connections.length; i++) {
       //console.log(socket);
@@ -59,6 +58,28 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  // register players, if the player is not already registered
+  socket.on('register', function (data) {
+    player = getPlayerBySocket(socket);
+    if (player === undefined) {
+      player = new Player(data.name, data.email, socket)
+      players.push(player);
+      console.log("socket " + player.socket.id + " registered as " + player.name + "(" + player.email + ")")
+    } else {
+      console.log("player " + player.name + "(" + player.email + ")" + " is already registered with socket " + player.socket.id)
+    }
+
+    // create bomb if more then two players are registered and we don't have a bomb already
+    if(players.length > 1 && bombs.length == 0) {
+      var ttl = 20 //Math.floor(Math.random()*100)
+      bombs.push({id: bombs.length, ttl: ttl, handlerId: socket.id})
+      socket.emit('caughtBomb');
+    } else {
+      socket.emit('lostBomb');
+    }
+  });
+
+  // process bomb throws
   socket.on('throwBomb', function () {
     console.log("throwBomb " + socket.id );
     var victim = getRandomConnectionExceptMe(socket);
@@ -66,6 +87,7 @@ io.sockets.on('connection', function (socket) {
     victim.emit('caughtBomb');
     socket.emit('lostBomb');
   });
+
 });
 
 setInterval(function(){
@@ -75,11 +97,15 @@ setInterval(function(){
   if(bombs.length > 0) {
     bombs[0].ttl = bombs[0].ttl - 1;
     bomb_ttl = bombs[0].ttl;
-    bomb_holder = bombs[0].handlerId;
+    console.log("bombs[0].handlerId: " + bombs[0].handlerId);
+    console.log("getSocketById(bombs[0].handlerId): " + getSocketById(bombs[0].handlerId));
+    console.log("getPlayerBySocket: " + getPlayerBySocket(getSocketById(bombs[0].handlerId)));
+    bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId)).name;
+    //bomb_holder = bombs[0].handlerId;
   }
-  // inform all clients about game state
-  for (var i = 0; i < connections.length; i++) {
-    connections[i].emit('info', { connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder});
+  // inform all players about game state
+  for (var i = 0; i < players.length; i++) {
+    players[i].socket.emit('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder});
   }
   // check if bomb goes boooooooom!
   if(bombs.length > 0 && bombs[0].ttl < 1) {
@@ -87,6 +113,19 @@ setInterval(function(){
     bombs.pop();
   }
 }, 1000);
+
+var getPlayerBySocket = function(socket) {
+  return players[getPlayerNrById(socket.id)];
+}
+
+var getPlayerNrById = function(id) {
+  console.log("getPlayerNrById(" + id + ")")
+  for (var i = 0; i < players.length; i++) {
+    if(id == players[i].socket.id) {
+      return i;
+    }
+  }
+}
 
 var getSocketNrById = function(id) {
   for (var i = 0; i < connections.length; i++) {
