@@ -9,6 +9,9 @@ socket.on('bombe', function (data) {
 
 socket.on('info', function (data) {
   console.log("Player: " + data.connections_cnt + ", Bombs: " + data.bombs_cnt);
+  
+  $("#stats .player p").text(data.connections_cnt);
+  $("#stats .bomb p").text(data.bombs_cnt);
 })
 
 createjs.Sound.setMute(false);
