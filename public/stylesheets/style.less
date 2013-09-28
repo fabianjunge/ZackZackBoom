@@ -18,6 +18,10 @@ body {
 		padding: 0;
 	}
 
+	p {
+		letter-spacing: .03em;
+	}
+
 	#login_overlay {
 		background-color: @black-a;
 		position: fixed;
@@ -47,6 +51,13 @@ body {
 				text-align: center;
 				padding: 0px;
 
+				
+				&:focus {
+					//outline: none;
+					outline-color: @darkred;
+				}
+				
+
 			}
 			.submit {
 				margin-top: 5%;
@@ -55,10 +66,19 @@ body {
 				font-size: 1.3em;
 				font-weight: bold;
 				color: @cloud;
-				background-color: @darkred;
+				background-color: @red;
 				border-radius: 0px;
 				-webkit-appearance: none;
 				border-color: transparent;
+				-webkit-transition: all .2s cubic-bezier(.73, 0, .53, 1); 
+				-moz-transition: all .2s cubic-bezier(.73, 0, .53, 1); 
+				&:focus {
+					//outline: none;
+					outline-color: @darkred;
+				}
+				&:hover {
+					background-color: @darkred;
+				}
 			}
 		}	
 	}
@@ -74,8 +94,7 @@ body {
 			width: 30%;
 			height: 8%;
 			float: left;
-			background-position-x: 85%;
-			background-position-y: 3px;
+			background-position: 85% 1%;
 			@media (min-width: 700px) {
 						background-size: 60%;
 						width: 10%;
@@ -95,7 +114,7 @@ body {
 			background-image: url(../graphics/bomb.svg);
 			background-repeat: no-repeat;
 			background-size: 50%;
-			background-position-y: 2px;
+			background-position: 0px 10%;
 			margin: 2%;
 			width: 29%;
 			height: 8%;
@@ -103,6 +122,7 @@ body {
 			@media (min-width: 700px) {
 						background-size: 60%;
 						width: 10%;
+						background-position: 0px -10%;
 					}
 			p{
 				line-height: 0.0em;
