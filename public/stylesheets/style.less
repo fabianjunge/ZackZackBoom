@@ -61,6 +61,7 @@ body {
 	#content {
 		
 		.bomb {
+			display: none;
 			padding-top: 30%;
 			width: 230px;
 			margin-left: auto;
@@ -68,14 +69,34 @@ body {
 			img {
 				width: 230px;
 			}
+		}
+		.nobomb {
+			display: block;
+			padding-top: 20%;
+			width: 230px;
+			margin-left: auto;
+			margin-right: auto;
+			p {
+				color: @cloud;
+				font-size: 4em;
+				text-align: center;
+				font-weight: bold;
+			}
+		}
+		.button_active{
+			display: none;
+			background-color: @cloud;
 		}	
-		.button {
+		.button_inactive {
+			display: block;
+			background-color: @darkred;
+		}
+		.button_active, .button_inactive {
 			position: fixed;
 			bottom: 5%;
 			left: 50%;
 			width: 230px;
 			height: 10px;
-			background-color: #ecf0f1;
 			border: none;
 			text-align: center;
 			padding: 20px;

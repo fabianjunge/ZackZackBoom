@@ -1,7 +1,6 @@
 extends layout
 
 block content
-	h1= Auto Deploy
 	#stats
 		.player
 			p 0
@@ -10,5 +9,9 @@ block content
 	#content
 		.bomb
 			img(src = 'http://trenchreynolds.me/wp-content/uploads/bomb.png')
-		.button
-			a(href='#') Weiterwerfen
+		.nobomb
+			p Player 1 has the Bomb
+		.button_active
+			a(href='#') Throw Bomb!
+		.button_inactive
+			a(href='#') Wait!
