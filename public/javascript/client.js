@@ -74,8 +74,8 @@ $(document).ready( function() {
   $(".button_active").click( function() {
     throwBomb();
   });
-  
-  $("#login_overlay").on('onkeydown',"input.loginname", function (e) {
+
+  $("#login_overlay").on('keydown',"input.loginname", function (e) {
     if (e.keyCode == 13) {
       registerName();
     }
@@ -85,7 +85,7 @@ $(document).ready( function() {
     registerName();
   });
 
-  $("body").on('onkeyup','body', function(e) {
+  $(document).bind('keyup', function(e) {
     if (e.keyCode == 32) {
       throwBomb();
     }
