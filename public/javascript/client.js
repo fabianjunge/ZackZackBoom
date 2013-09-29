@@ -47,14 +47,12 @@ function throwBomb() {
   console.log('sent throwBomb')
 }
 
-
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
   instance.setMute(false);
   instance.volume = 0.5;
   lostBomb();
-  alert("You've got bombed!!!")
 });
 
 socket.on('info', function (data) {

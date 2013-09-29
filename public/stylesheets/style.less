@@ -80,6 +80,37 @@ body {
 				}
 			}
 		}
+		.button_restart {
+			background-color: @cloud;
+			width: 230px;
+			height: 30px;
+			border: none;
+			text-align: center;
+			padding: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			border-color: transparent;
+			-webkit-transition: background-color 0.2s;
+			padding-top: 23px;
+			@media screen and (max-height: 430px) {
+				height: 10px;
+				padding-top: 8px;
+			}
+			a {
+				color: @red;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				text-decoration: none;
+				text-transform: uppercase;
+				letter-spacing: .2em;
+				font-size: 1.5em;
+				font-weight: bold;
+				@media screen and (max-height: 430px) {
+					font-size: 1.3em;
+				}
+			}
+		}
 	}
 
 	#login_overlay {
@@ -231,7 +262,7 @@ body {
 				-ms-user-select: none;
 			}
 		}
-		.button_active{
+		.button_active {
 			display: none;
 			background-color: @cloud;
 		}	
@@ -269,9 +300,9 @@ body {
 				@media screen and (max-height: 430px) {
 					font-size: 1.3em;
 				}
-			}	
+			}
 		}
-	}		
+	}
 }
 
 a {
