@@ -74,7 +74,11 @@ $(document).ready( function() {
   $(".button_active").click( function() {
     throwBomb();
   });
-
+  
+  $(".bomb").click( function() {
+    throwBomb();
+  });
+  
   $("#login_overlay").on('keydown',"input.loginname", function (e) {
     if (e.keyCode == 13) {
       registerName();
