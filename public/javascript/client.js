@@ -41,6 +41,11 @@ function registerName() {
   console.log($(".loginname").val());
 }
 
+function ready() {
+  $("#score_overlay").fadeOut();
+  socket.emit('playerReady');
+}
+
 function throwBomb() {
   clickSound.play();
   socket.emit('throwBomb');
@@ -84,12 +89,17 @@ socket.on('roundEnd', function (data) {
     $("#score_overlay p").text(data[data.length-1].name + " got bombed!!!");
     $("#score_overlay table").append(content);
   }
-  $("#score_overlay").show();
+  $("#score_overlay").fadeIn();
 });
 
 $(document).ready( function() {
   $(".button_active").click( function() {
     throwBomb();
+  });
+  
+  $(".button_restart").click( function() {
+    clickSound.play();
+    ready();
   });
   
   $(".bomb").click( function() {
