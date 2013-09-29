@@ -80,6 +80,15 @@ socket.on('bombMoved', function (data) {
   setBombHolder(data.bomb_holder);
 });
 
+socket.on('roundEnd', function (data) {
+  for (var i = 0; i < data.length; i++) {
+    var content = "<tr><td>" + data[i].pos + "</td><td>" + data[i].name  + "</td><td>" + data[i].score + "</td></tr>";
+    $("#score_overlay p").text(data[data.length-1].name + " got bombed!!!");
+    $("#score_overlay table").append(content);
+  }
+  $("#score_overlay").show();
+});
+
 $(document).ready( function() {
   $(".button_active").click( function() {
     throwBomb();
