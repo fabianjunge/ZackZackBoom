@@ -1,6 +1,6 @@
 //mixins
-@red: #E74C3C;
-@darkred: #AF291B;
+@primary: #4B85CA;
+@secondary: #1A4D8A;
 @cloud: white;
 @black-a: rgba(0,0,0,0.85);
 
@@ -23,7 +23,7 @@
 }
 
 body {
-	background-color: @red;	
+	background-color: @primary;	
 	margin: 0px;
 	font: 14px -apple-system-font,"Helvetica Neue","Helvetica",sans-serif;
 
@@ -45,7 +45,7 @@ body {
 	
 	#score_overlay {
 		display: none;
-		background-color: @red;
+		background-color: @primary;
 		position: fixed;
 		width: 100%;
 		height: 100%;
@@ -54,6 +54,11 @@ body {
 		color: white;
 		font-size: 1.5em;
 		overflow: scroll;
+
+		h2 {
+			margin-top: 0px;
+			margin-bottom: 6%;
+		}
 		img {
 			width: 100%;
 			display: block;
@@ -61,6 +66,8 @@ body {
 			margin-top: 20px;
 			margin-left: auto;
 			margin-right: auto;
+			margin-top: -30px;
+			margin-bottom: -30px;
 		}
 		
 		p {
@@ -91,13 +98,11 @@ body {
 			margin-right: auto;
 			border-color: transparent;
 			-webkit-transition: background-color 0.2s;
-			padding-top: 23px;
-			@media screen and (max-height: 430px) {
-				height: 10px;
-				padding-top: 8px;
-			}
+			padding-top: 15px;
+			margin-top: 5%;
+			margin-bottom: 2%;
 			a {
-				color: @red;
+				color: @primary;
 				-webkit-user-select: none;
 				-moz-user-select: none;
 				-ms-user-select: none;
@@ -106,9 +111,6 @@ body {
 				letter-spacing: .2em;
 				font-size: 1.5em;
 				font-weight: bold;
-				@media screen and (max-height: 430px) {
-					font-size: 1.3em;
-				}
 			}
 		}
 	}
@@ -137,7 +139,7 @@ body {
 				padding: 0px;
 
 				&:focus {
-					outline-color: @darkred;
+					outline-color: @secondary;
 				}
 				
 
@@ -149,7 +151,7 @@ body {
 				font-size: 1.3em;
 				font-weight: bold;
 				color: @cloud;
-				background-color: @red;
+				background-color: @primary;
 				border-radius: 0px;
 				-webkit-appearance: none;
 				border-color: transparent;
@@ -157,10 +159,10 @@ body {
 				-moz-transition: all .2s cubic-bezier(.73, 0, .53, 1); 
 				&:focus {
 					//outline: none;
-					outline-color: @darkred;
+					outline-color: @secondary;
 				}
 				&:hover {
-					background-color: @darkred;
+					background-color: @secondary;
 				}
 			}
 		}	
@@ -268,7 +270,7 @@ body {
 		}	
 		.button_inactive {
 			display: block;
-			background-color: @darkred;
+			background-color: @secondary;
 		}
 		.button_active, .button_inactive {
 			position: fixed;
@@ -288,7 +290,7 @@ body {
 				padding-top: 8px;
 			}
 			a {
-				color: @red;
+				color: @primary;
 				-webkit-user-select: none;
 				-moz-user-select: none;
 				-ms-user-select: none;
