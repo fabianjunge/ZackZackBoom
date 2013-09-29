@@ -45,6 +45,7 @@ function Player(name, email, socket) {
   this.email = email;
   this.socket = socket;
   this.score = 0;
+  this.state = 'ready';
 }
 
 Player.prototype.addScore = function (amount) {
@@ -53,6 +54,22 @@ Player.prototype.addScore = function (amount) {
 
 Player.prototype.lost = function () {
   this.score = this.score * -1;
+}
+
+Player.prototype.setReady = function () {
+  this.state = 'ready';
+}
+
+Player.prototype.setPlaying = function () {
+  this.state = 'playing';
+}
+
+Player.prototype.setUnready = function () {
+  this.state = 'unready';
+}
+
+Player.prototype.isReady = function () {
+  return this.state === 'ready';
 }
 
 io.sockets.on('connection', function (socket) {
@@ -76,13 +93,25 @@ io.sockets.on('connection', function (socket) {
       console.log("player " + player.name + "(" + player.email + ")" + " is already registered with socket " + player.socket.id)
     }
 
-    // create bomb if more then two players are registered and we don't have a bomb already
-    if(players.length > 1 && bombs.length == 0) {
-      var ttl = randomFromMinMax(5,20);
-      bombs.push({id: bombs.length, ttl: ttl, handlerId: socket.id})
-      socket.emit('caughtBomb');
+    // initialize client
+    socket.emit('lostBomb');
+
+    // maybe start a round?
+    startRound();
+
+  });
+
+  // process playerReady messages
+  socket.on('playerReady', function () {
+    var player = getPlayerBySocket(socket);
+    if(player === undefined) {
+      console.log("Player has to register first! (" + socket.id + ")");
+      socket.emit('requestRegistration');
     } else {
-      socket.emit('lostBomb');
+      player.setReady();
+      
+      // maybe start a round?
+      startRound();
     }
   });
 
@@ -123,6 +152,26 @@ setInterval(function(){
   checkBomb();
 }, 1000);
 
+var startRound = function() {
+  console.log(readyPlayers().length);
+  // create bomb if more then two players are registered and we don't have a bomb already
+  if(readyPlayers().length > 1 && bombs.length == 0) {
+    var ttl = randomFromMinMax(20,40);
+    // create bomb and give to random player
+    var player = readyPlayers()[randomFromMinMax(0,readyPlayers().length-1)];
+    bombs.push({id: bombs.length, ttl: ttl, handlerId: player.socket.id})
+    player.socket.emit('caughtBomb');
+  } else {
+    console.log('Waiting for second player...');
+  }
+}
+
+var readyPlayers = function() {
+  return _.filter(players, function(pl) {
+    return pl.isReady();
+  });
+}
+
 var sendAllPlayers = function(command, data) {
   for (var i = 0; i < players.length; i++) {
     players[i].socket.emit(command, data);
@@ -146,12 +195,15 @@ var checkBomb = function() {
       }
       console.log('Round ended!');
       sendAllPlayers('roundEnd', getGameStats());
+      _.forEach(readyPlayers(), function (pl) {
+        pl.setUnready();
+      });
     }
   }
 }
 
 var getGameStats = function() {
-  var sortedList = _.sortBy(players, function(pl) {
+  var sortedList = _.sortBy(readyPlayers(), function(pl) {
     return pl.score * -1;
   });
   var pos = 0;
@@ -236,12 +288,12 @@ var getSocketById = function(id) {
 }
 
 var getRandomPlayerExceptMe = function(socket) {
-  var victim_nr = randomFromMinMax(0,(players.length - 1) - 1);
+  var victim_nr = randomFromMinMax(0,(readyPlayers().length - 1) - 1);
   var myNr = getPlayerNrById(socket.id);
   console.log('myNr: ' + myNr);
-  if (players.length > 1 && victim_nr >= myNr) { victim_nr = victim_nr + 1;};
+  if (readyPlayers().length > 1 && victim_nr >= myNr) { victim_nr = victim_nr + 1;};
   console.log('victim_nr: ' + victim_nr);
-  return players[victim_nr];
+  return readyPlayers()[victim_nr];
 }
 
 var randomFromMinMax = function(min, max) {
