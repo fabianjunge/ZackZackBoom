@@ -109,7 +109,6 @@ io.sockets.on('connection', function (socket) {
       socket.emit('requestRegistration');
     } else {
       player.setReady();
-      
       // maybe start a round?
       startRound();
     }
@@ -143,10 +142,9 @@ setInterval(function(){
         bomb_holder_name = undefined;
       }
     }
-    //bomb_holder = bombs[0].handlerId;
   }
   // inform all players about game state
-  sendAllPlayers('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
+  sendAllPlayers('info', { players_cnt: players.length, ready_players_cnt: readyPlayers().length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
 
   // check if bomb goes boooooooom!
   checkBomb();
