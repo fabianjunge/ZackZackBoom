@@ -66,4 +66,6 @@ $(document).ready( function() {
     socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
     console.log($(".loginname").val());
   })
+  
+  });
 });
