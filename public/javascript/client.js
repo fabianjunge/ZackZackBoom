@@ -31,6 +31,21 @@ function lostBomb() {
   $(".button_inactive").show()
 };
 
+function registerName() {
+  $("#login_overlay").fadeOut();
+  socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
+  console.log($(".loginname").val());
+}
+
+function throwBomb() {
+  var instance = createjs.Sound.play("click");
+  instance.setMute(false);
+  instance.volume = 0.5;
+  socket.emit('throwBomb');
+  console.log('sent throwBomb')
+}
+
+
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
@@ -57,16 +72,23 @@ socket.on('caughtBomb', function () {
 
 $(document).ready( function() {
   $(".button_active").click( function() {
-    var instance = createjs.Sound.play("click");
-    instance.setMute(false);
-    instance.volume = 0.5;
-    socket.emit('throwBomb');
-    console.log('sent throwBomb')
+    throwBomb();
   });
   
-  $(".submit").click( function() {
-    $("#login_overlay").fadeOut();
-    socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
-    console.log($(".loginname").val());
+  $("#login_overlay").on('onkeydown',"input.loginname", function (e) {
+    if (e.keyCode == 13) {
+      registerName();
+    }
   });
+
+  $(".submit").click( function() {
+    registerName();
+  });
+
+  $("body").on('onkeyup','body', function(e) {
+    if (e.keyCode == 32) {
+      throwBomb();
+    }
+  });
+
 });

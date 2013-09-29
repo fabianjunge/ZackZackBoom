@@ -5,17 +5,16 @@
 @black-a: rgba(0,0,0,0.85);
 
 @-webkit-keyframes pulse {
-  from{
-    -webkit-transform: scale(1);
-  }
-  to{
-    -webkit-transform: scale(1.1);
-  }
+	from{
+		-webkit-transform: scale(1);
+	}
+	to{
+		-webkit-transform: scale(1.1);
+	}
 }
 
 body {
 	background-color: @red;	
-	//padding: 50px;
 	margin: 0px;
 	font: 14px -apple-system-font,"Helvetica Neue","Helvetica",sans-serif;
 
@@ -96,9 +95,7 @@ body {
 				text-align: center;
 				padding: 0px;
 
-				
 				&:focus {
-					//outline: none;
 					outline-color: @darkred;
 				}
 				
@@ -137,20 +134,18 @@ body {
 			background-size: 50%;
 			margin: 2%;
 			width: 30%;
-			height: 8%;
 			float: left;
-			background-position: 85% 1%;
+			background-position: 40px -3px;
 			@media (min-width: 700px) {
-						background-size: 60%;
-						width: 10%;
-					}
+				background-size: 60%;
+				width: 10%;
+			}
 
 			p{
-				line-height: 0.0em;
 				color: white;
 				font-size: 3em;
 				float: left;
-				margin-top: 30%;
+				margin-top: 0px;
 				-webkit-user-select: none;
 				-moz-user-select: none;
 				-ms-user-select: none;
@@ -161,22 +156,20 @@ body {
 			background-image: url(../graphics/bomb.svg);
 			background-repeat: no-repeat;
 			background-size: 50%;
-			background-position: 0px 10%;
+			background-position: 12px 0px;
 			margin: 2%;
 			width: 29%;
-			height: 8%;
 			float: right;
 			@media (min-width: 700px) {
-						background-size: 60%;
-						width: 10%;
-						background-position: 0px -10%;
-					}
+				background-size: 60%;
+				width: 10%;
+				background-position: 0px -10%;
+			}
 			p{
-				line-height: 0.0em;
 				color: white;
 				font-size: 3em;
 				float: right;
-				margin-top: 30%;
+				margin-top: 0px;
 				-webkit-user-select: none;
 				-moz-user-select: none;
 				-ms-user-select: none;
@@ -193,11 +186,11 @@ body {
 			margin-right: auto;
 			-webkit-animation: pulse .4s ease-in-out -.4s infinite alternate forwards;
 			@media (min-width: 700px) {
-						padding-top: 15%;
-					}
+				padding-top: 15%;
+			}
 			@media screen and (max-height: 430px) {
-						padding-top: 30%;
-					}		
+				padding-top: 30%;
+			}		
 
 			img {
 				width: 230px;
@@ -210,8 +203,8 @@ body {
 			margin-left: auto;
 			margin-right: auto;
 			@media (min-width: 700px) {
-						padding-top: 10%;
-					}
+				padding-top: 10%;
+			}
 			p {
 				color: @cloud;
 				font-size: 4em;
@@ -245,13 +238,9 @@ body {
 			-webkit-transition: background-color 0.2s;
 			padding-top: 23px;
 			@media screen and (max-height: 430px) {
-						height: 10px;
-						padding-top: 8px;
-					}
-			//-webkit-transform: scale(2);
-			/*&:hover {
-						background-color: @red;
-					}*/
+				height: 10px;
+				padding-top: 8px;
+			}
 			a {
 				color: @red;
 				-webkit-user-select: none;
@@ -263,11 +252,8 @@ body {
 				font-size: 1.5em;
 				font-weight: bold;
 				@media screen and (max-height: 430px) {
-						font-size: 1.3em;
-					}
-				/*&:hover {
-					color: @cloud;
-				}*/
+					font-size: 1.3em;
+				}
 			}	
 		}
 	}		
