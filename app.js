@@ -10,6 +10,7 @@ var routes = require('./routes');
 var server = require('http').createServer(app);
 var path = require('path');
 var io = require('socket.io').listen(server);
+var _ = require('underscore');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -43,6 +44,15 @@ function Player(name, email, socket) {
   this.name = name;
   this.email = email;
   this.socket = socket;
+  this.score = 0;
+}
+
+Player.prototype.addScore = function (amount) {
+  this.score = this.score + amount;
+}
+
+Player.prototype.lost = function () {
+  this.score = this.score * -1;
 }
 
 io.sockets.on('connection', function (socket) {
@@ -97,6 +107,8 @@ setInterval(function(){
     } else {
       var bomb_holder = getPlayerBySocket(socket);
       if (bomb_holder !== undefined) {
+        // add score to player
+        bomb_holder.addScore(1);
         bomb_holder_name = bomb_holder.name;
       } else {
         bomb_holder_name = undefined;
@@ -129,12 +141,25 @@ var checkBomb = function() {
       var looser = getPlayerBySocket(socket);
       var looser_name = undefined;
       if (looser !== undefined) {
+        looser.lost();
         looser_name = looser.name;
       }
       console.log('Round ended!');
-      sendAllPlayers('roundEnd', {loser: looser_name});
+      sendAllPlayers('roundEnd', getGameStats());
     }
   }
+}
+
+var getGameStats = function() {
+  var sortedList = _.sortBy(players, function(pl) {
+    return pl.score * -1;
+  });
+  var pos = 0;
+  var gameStatsArray = _.map(sortedList, function (pl) {
+    pos = pos + 1;
+    return { pos: pos, name: pl.name , score: pl.score };
+  });
+  return gameStatsArray;
 }
 
 var moveBombAwayFrom = function(socket) {
