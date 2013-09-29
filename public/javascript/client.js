@@ -56,6 +56,10 @@ function setBombHolder(name) {
   $("#content .nobomb p").text(name + " has the bomb");
 }
 
+socket.on('requestRegistration', function () {
+  $("#login_overlay").fadeIn();
+});
+
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
@@ -84,6 +88,7 @@ socket.on('bombMoved', function (data) {
 });
 
 socket.on('roundEnd', function (data) {
+  $("#score_overlay table").empty();
   for (var i = 0; i < data.length; i++) {
     var content = "<tr><td>" + data[i].pos + "</td><td>" + data[i].name  + "</td><td>" + data[i].score + "</td></tr>";
     $("#score_overlay p").text(data[data.length-1].name + " got bombed!!!");
