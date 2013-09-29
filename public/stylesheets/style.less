@@ -13,6 +13,15 @@
 	}
 }
 
+@-moz-keyframes pulse {
+	from{
+		-moz-transform: scale(1);
+	}
+	to{
+		-moz-transform: scale(1.1);
+	}
+}
+
 body {
 	background-color: @red;	
 	margin: 0px;
@@ -190,6 +199,7 @@ body {
 			margin-left: auto;
 			margin-right: auto;
 			-webkit-animation: pulse .4s ease-in-out -.4s infinite alternate forwards;
+			-moz-animation: pulse .4s ease-in-out -.4s infinite alternate forwards;
 			@media (min-width: 700px) {
 				padding-top: 15%;
 			}

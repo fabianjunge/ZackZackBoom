@@ -3,9 +3,9 @@
 var socket = io.connect();
 
 createjs.Sound.setMute(false);
-createjs.Sound.registerSound("/sounds/bomb.mp3", "boom");
-createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
-createjs.Sound.registerSound("/sounds/click.mp3", "click");
+createjs.Sound.registerSound("/sounds/bomb.mp3|/sounds/bomb.ogg", "boom");
+createjs.Sound.registerSound("/sounds/tick.mp3|/sounds/tick.ogg", "tick");
+createjs.Sound.registerSound("/sounds/click.mp3|/sounds/click.ogg", "click");
 
 
 var tickloopSound = createjs.Sound.createInstance("tick");
