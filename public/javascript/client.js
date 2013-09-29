@@ -47,6 +47,10 @@ function throwBomb() {
   console.log('sent throwBomb')
 }
 
+function setBombHolder(name) {
+  $("#content .nobomb p").text(name + " has the bomb");
+}
+
 
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
@@ -61,7 +65,7 @@ socket.on('info', function (data) {
   console.log("Players/Connections: " + data.players_cnt + "/" + data.connections_cnt + ", Bombs: " + data.bombs_cnt + ", TTL: " + data.bombs_ttl + ", Holder: " + data.bomb_holder);
   $("#stats .player p").text(data.connections_cnt);
   $("#stats .bomb p").text(data.bombs_cnt);
-  $("#content .nobomb p").text(data.bomb_holder + " has the bomb");
+  setBombHolder(data.bomb_holder);
 });
 
 socket.on('lostBomb', function () {
@@ -70,6 +74,10 @@ socket.on('lostBomb', function () {
 
 socket.on('caughtBomb', function () {
   gotBomb();
+});
+
+socket.on('bombMoved', function (data) {
+  setBombHolder(data.bomb_holder);
 });
 
 $(document).ready( function() {

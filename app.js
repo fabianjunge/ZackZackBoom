@@ -168,6 +168,7 @@ var moveBombAwayFrom = function(socket) {
   bombs[0].handlerId = victim.socket.id;
   socket.emit('lostBomb');
   victim.socket.emit('caughtBomb');
+  sendAllPlayers('bombMoved', {bomb_holder: victim.name});
 }
 
 var removePlayerBySocketId = function(id) {
