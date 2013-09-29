@@ -37,6 +37,15 @@ function registerName() {
   console.log($(".loginname").val());
 }
 
+function throwBomb() {
+  var instance = createjs.Sound.play("click");
+  instance.setMute(false);
+  instance.volume = 0.5;
+  socket.emit('throwBomb');
+  console.log('sent throwBomb')
+}
+
+
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
@@ -63,11 +72,7 @@ socket.on('caughtBomb', function () {
 
 $(document).ready( function() {
   $(".button_active").click( function() {
-    var instance = createjs.Sound.play("click");
-    instance.setMute(false);
-    instance.volume = 0.5;
-    socket.emit('throwBomb');
-    console.log('sent throwBomb')
+    throwBomb();
   });
   
   $("#login_overlay").on('onkeydown',"input.loginname", function (e) {
@@ -78,5 +83,12 @@ $(document).ready( function() {
 
   $(".submit").click( function() {
     registerName();
-  })
+  });
+
+  $("body").on('onkeyup','body', function(e) {
+    if (e.keyCode == 32) {
+      throwBomb();
+    }
+  });
+
 });

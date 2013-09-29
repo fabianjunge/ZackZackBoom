@@ -68,7 +68,7 @@ io.sockets.on('connection', function (socket) {
 
     // create bomb if more then two players are registered and we don't have a bomb already
     if(players.length > 1 && bombs.length == 0) {
-      var ttl = 20 //Math.floor(Math.random()*100)
+      var ttl = randomFromMinMax(5,20);
       bombs.push({id: bombs.length, ttl: ttl, handlerId: socket.id})
       socket.emit('caughtBomb');
     } else {
@@ -79,7 +79,7 @@ io.sockets.on('connection', function (socket) {
   // process bomb throws
   socket.on('throwBomb', function () {
     console.log("throwBomb " + socket.id );
-    moveBomb(socket);
+    moveBombAwayFrom(socket);
   });
 
 });
@@ -91,30 +91,58 @@ setInterval(function(){
   if(bombs.length > 0) {
     bombs[0].ttl = bombs[0].ttl - 1;
     bomb_ttl = bombs[0].ttl;
-    var bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId));
-    if (bomb_holder !== undefined) {
-      bomb_holder_name = bomb_holder.name;
-    } else {
+    var socket = getSocketById(bombs[0].handlerId);
+    if (socket == undefined) {
       bomb_holder_name = undefined;
+    } else {
+      var bomb_holder = getPlayerBySocket(socket);
+      if (bomb_holder !== undefined) {
+        bomb_holder_name = bomb_holder.name;
+      } else {
+        bomb_holder_name = undefined;
+      }
     }
     //bomb_holder = bombs[0].handlerId;
   }
   // inform all players about game state
-  for (var i = 0; i < players.length; i++) {
-    players[i].socket.emit('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
-  }
+  sendAllPlayers('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
+
   // check if bomb goes boooooooom!
-  if(bombs.length > 0 && bombs[0].ttl < 1) {
-    getSocketById(bombs[0].handlerId).emit('explodeBomb');
-    bombs.pop();
-  }
+  checkBomb();
 }, 1000);
 
-var moveBomb = function(socket) {
+var sendAllPlayers = function(command, data) {
+  for (var i = 0; i < players.length; i++) {
+    players[i].socket.emit(command, data);
+  }
+}
+
+var checkBomb = function() {
+  if(bombs.length > 0 && bombs[0].ttl < 1) {
+    var socket = getSocketById(bombs[0].handlerId)
+    if (socket !== undefined) {
+      socket.emit('explodeBomb');
+    }
+    bombs.pop();
+    console.log("Bomb explodes!");
+    if (bombs.length < 1) {
+      var looser = getPlayerBySocket(socket);
+      var looser_name = undefined;
+      if (looser !== undefined) {
+        looser_name = looser.name;
+      }
+      console.log('Round ended!');
+      sendAllPlayers('roundEnd', {loser: looser_name});
+    }
+  }
+}
+
+var moveBombAwayFrom = function(socket) {
+  console.log("Try to move Bomb away from " + getPlayerNameBySocket(socket));
   var victim = getRandomPlayerExceptMe(socket);
   bombs[0].handlerId = victim.socket.id;
-  victim.socket.emit('caughtBomb');
   socket.emit('lostBomb');
+  victim.socket.emit('caughtBomb');
 }
 
 var removePlayerBySocketId = function(id) {
@@ -122,7 +150,7 @@ var removePlayerBySocketId = function(id) {
   if (pNr !== undefined) {
     // check if Player has bomb, if so move it
     if (bombs.length > 0 && bombs[0].handlerId === id) {
-      moveBomb(getSocketById(id));
+      moveBombAwayFrom(getSocketById(id));
     }
     var player = players[pNr];
     players.splice(pNr,1);
@@ -139,7 +167,13 @@ var removeConnectionById = function(id) {
 }
 
 var getPlayerBySocket = function(socket) {
+  if (socket === undefined) return undefined;
   return players[getPlayerNrById(socket.id)];
+}
+
+var getPlayerNameBySocket = function(socket) {
+  var pl = getPlayerBySocket(socket);
+  if (pl !== undefined) return pl.name;
 }
 
 var getPlayerNrById = function(id) {
@@ -167,7 +201,7 @@ var getRandomPlayerExceptMe = function(socket) {
   var victim_nr = randomFromMinMax(0,(players.length - 1) - 1);
   var myNr = getPlayerNrById(socket.id);
   console.log('myNr: ' + myNr);
-  if (victim_nr >= myNr) { victim_nr = victim_nr + 1;};
+  if (players.length > 1 && victim_nr >= myNr) { victim_nr = victim_nr + 1;};
   console.log('victim_nr: ' + victim_nr);
   return players[victim_nr];
 }
