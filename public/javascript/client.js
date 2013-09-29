@@ -47,6 +47,10 @@ function throwBomb() {
   console.log('sent throwBomb')
 }
 
+function setBombHolder(name) {
+  $("#content .nobomb p").text(name + " has the bomb");
+}
+
 socket.on('explodeBomb', function (data) {
   console.log("Explodiere!");
   var instance = createjs.Sound.play("boom");
@@ -59,7 +63,7 @@ socket.on('info', function (data) {
   console.log("Players/Connections: " + data.players_cnt + "/" + data.connections_cnt + ", Bombs: " + data.bombs_cnt + ", TTL: " + data.bombs_ttl + ", Holder: " + data.bomb_holder);
   $("#stats .player p").text(data.connections_cnt);
   $("#stats .bomb p").text(data.bombs_cnt);
-  $("#content .nobomb p").text(data.bomb_holder + " has the bomb");
+  setBombHolder(data.bomb_holder);
 });
 
 socket.on('lostBomb', function () {
@@ -70,14 +74,17 @@ socket.on('caughtBomb', function () {
   gotBomb();
 });
 
+socket.on('bombMoved', function (data) {
+  setBombHolder(data.bomb_holder);
+});
+
 socket.on('roundEnd', function (data) {
   for (var i = 0; i < data.length; i++) {
     var content = "<tr><td>" + data[i].pos + "</td><td>" + data[i].name  + "</td><td>" + data[i].score + "</td></tr>";
     $("#score_overlay p").text(data[data.length-1].name + " got bombed!!!");
     $("#score_overlay table").append(content);
   }
-  
-   $("#score_overlay").show();
+  $("#score_overlay").show();
 });
 
 $(document).ready( function() {
