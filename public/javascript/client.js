@@ -91,4 +91,9 @@ $(document).ready( function() {
     }
   });
 
+  $("#login_overlay").fadeOut();
+    socket.emit('register', { name: $(".loginname").val() , email: "franz@aol.de"} );
+    console.log($(".loginname").val());
+  });
+
 });

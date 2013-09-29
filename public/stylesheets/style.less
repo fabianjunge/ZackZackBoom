@@ -4,6 +4,15 @@
 @cloud: white;
 @black-a: rgba(0,0,0,0.85);
 
+@-webkit-keyframes pulse {
+  from{
+    -webkit-transform: scale(1);
+  }
+  to{
+    -webkit-transform: scale(1.1);
+  }
+}
+
 body {
 	background-color: @red;	
 	//padding: 50px;
@@ -17,10 +26,31 @@ body {
 		margin: 0;
 		padding: 0;
 	}
-
-	p {
-		letter-spacing: .03em;
+	
+	#score_overlay {
+		background-color: @red;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		z-index: 3;
+		
+		color: white;
+		font-size: 3em;
+		img {
+			margin-left: auto;
+			margin-right: auto;
+		}	
+		ul {
+			padding: 0px;
+			margin: 0px;
+			list-style: none;
+			
+			li {
+				text-align: center;
+			}
+		}
 	}
+	
 
 	#login_overlay {
 		background-color: @black-a;
@@ -36,6 +66,7 @@ body {
 			font-weight:bold;
 			text-transform: uppercase;
 		}
+		
 		.login_form {
 			width: 230px;
 			margin-left: auto;
@@ -107,6 +138,8 @@ body {
 				float: left;
 				margin-top: 30%;
 				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
 			}
 		}
 
@@ -131,6 +164,8 @@ body {
 				float: right;
 				margin-top: 30%;
 				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
 			}
 		}
 	}
@@ -138,20 +173,25 @@ body {
 		
 		.bomb {
 			display: none;
-			padding-top: 30%;
+			padding-top: 20%;
 			width: 230px;
 			margin-left: auto;
 			margin-right: auto;
+			-webkit-animation: pulse .4s ease-in-out -.4s infinite alternate forwards;
 			@media (min-width: 700px) {
-						padding-top: 20%;
+						padding-top: 15%;
 					}
+			@media screen and (max-height: 430px) {
+						padding-top: 30%;
+					}		
+
 			img {
 				width: 230px;
 			}
 		}
 		.nobomb {
 			display: block;
-			padding-top: 20%;
+			padding-top: 10%;
 			width: 230px;
 			margin-left: auto;
 			margin-right: auto;
@@ -161,8 +201,12 @@ body {
 			p {
 				color: @cloud;
 				font-size: 4em;
+				line-height: 1.2em;
 				text-align: center;
 				font-weight: bold;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
 			}
 		}
 		.button_active{
@@ -197,6 +241,8 @@ body {
 			a {
 				color: @red;
 				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
 				text-decoration: none;
 				text-transform: uppercase;
 				letter-spacing: .2em;
