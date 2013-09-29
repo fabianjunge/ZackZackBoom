@@ -163,7 +163,19 @@ var getGameStats = function() {
 }
 
 var moveBombAwayFrom = function(socket) {
+  if (bombs.length < 1) {
+    console.log("No Bomb in the game!")
+    return;
+  }
+  if (socket === undefined) {
+    console.log("Given socket was undefined!")
+    return;
+  }
   console.log("Try to move Bomb away from " + getPlayerNameBySocket(socket));
+  if (bombs[0].handlerId !== socket.id) {
+    console.log(getPlayerNameBySocket(socket) + " doesn't possess the bomb!");
+    return;
+  }
   var victim = getRandomPlayerExceptMe(socket);
   bombs[0].handlerId = victim.socket.id;
   socket.emit('lostBomb');
