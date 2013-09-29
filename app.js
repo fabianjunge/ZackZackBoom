@@ -53,7 +53,7 @@ Player.prototype.addScore = function (amount) {
 }
 
 Player.prototype.lost = function () {
-  this.score = this.score * -1;
+  this.score = this.score - 20;
 }
 
 Player.prototype.setReady = function () {
