@@ -4,8 +4,9 @@ block content
 	#login_overlay
 		h2 Please Log In
 		.login_form
-			input(type='text',class='loginname',value='Your Name')
-			input(type='submit',class='submit',value='Submit')
+			form(action='javascript:return false')
+				input(type='text',class='loginname',placeholder='Your Name')
+				input(type='submit',class='submit',value='Submit')
 	#stats
 		.player
 			p 0
@@ -13,7 +14,8 @@ block content
 			p 0
 	#content
 		.bomb
-			img(src = 'http://trenchreynolds.me/wp-content/uploads/bomb.png')
+			//img(src = 'http://trenchreynolds.me/wp-content/uploads/bomb.png')
+			img(src = '../graphics/bigbomb.svg')
 		.nobomb
 			p Player 1 has the Bomb
 		.button_active

@@ -1,3 +1,4 @@
+"use strict"
 
 /**
  * Module dependencies.
@@ -49,13 +50,9 @@ io.sockets.on('connection', function (socket) {
 
   // handle disconnects
   socket.on('disconnect', function () {
-    for (var i = 0; i < connections.length; i++) {
-      //console.log(socket);
-      if (socket.id == connections[i].id) {
-        connections.splice(i, 1);
-        console.log("disconnect " + socket.id );
-      }
-    }
+    removePlayerBySocketId(socket.id);
+    removeConnectionById(socket.id);
+    console.log("disconnect " + socket.id );
   });
 
   // register players, if the player is not already registered
@@ -82,10 +79,7 @@ io.sockets.on('connection', function (socket) {
   // process bomb throws
   socket.on('throwBomb', function () {
     console.log("throwBomb " + socket.id );
-    var victim = getRandomPlayerExceptMe(socket);
-    bombs[0].handlerId = victim.socket.id;
-    victim.socket.emit('caughtBomb');
-    socket.emit('lostBomb');
+    moveBomb(socket);
   });
 
 });
@@ -93,19 +87,21 @@ io.sockets.on('connection', function (socket) {
 setInterval(function(){
   // calculate bomb ttl
   var bomb_ttl = -1;
-  var bomb_holder = "none";
+  var bomb_holder_name = "none";
   if(bombs.length > 0) {
     bombs[0].ttl = bombs[0].ttl - 1;
     bomb_ttl = bombs[0].ttl;
-    console.log("bombs[0].handlerId: " + bombs[0].handlerId);
-    console.log("getSocketById(bombs[0].handlerId): " + getSocketById(bombs[0].handlerId));
-    console.log("getPlayerBySocket: " + getPlayerBySocket(getSocketById(bombs[0].handlerId)));
-    bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId)).name;
+    bomb_holder = getPlayerBySocket(getSocketById(bombs[0].handlerId));
+    if (bomb_holder !== undefined) {
+      bomb_holder_name = bomb_holder.name;
+    } else {
+      bomb_holder_name = undefined;
+    }
     //bomb_holder = bombs[0].handlerId;
   }
   // inform all players about game state
   for (var i = 0; i < players.length; i++) {
-    players[i].socket.emit('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder});
+    players[i].socket.emit('info', { players_cnt: players.length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
   }
   // check if bomb goes boooooooom!
   if(bombs.length > 0 && bombs[0].ttl < 1) {
@@ -113,6 +109,33 @@ setInterval(function(){
     bombs.pop();
   }
 }, 1000);
+
+var moveBomb = function(socket) {
+  var victim = getRandomPlayerExceptMe(socket);
+  bombs[0].handlerId = victim.socket.id;
+  victim.socket.emit('caughtBomb');
+  socket.emit('lostBomb');
+}
+
+var removePlayerBySocketId = function(id) {
+  var pNr = getPlayerNrById(id);
+  if (pNr !== undefined) {
+    // check if Player has bomb, if so move it
+    if (bombs[0].handlerId === id) {
+      moveBomb(getSocketById(id));
+    }
+    players.splice(pNr,1);
+    console.log('Player "' + player.name + '" was removed.');
+  }
+}
+
+var removeConnectionById = function(id) {
+  var sNr = getSocketNrById(id);
+  if (sNr !== undefined) {
+    connections.splice(sNr,1);
+    console.log('Connection "' + id + '" was removed.');
+  }
+}
 
 var getPlayerBySocket = function(socket) {
   return players[getPlayerNrById(socket.id)];
