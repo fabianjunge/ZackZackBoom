@@ -8,15 +8,19 @@ createjs.Sound.registerSound("/sounds/tick.mp3", "tick");
 createjs.Sound.registerSound("/sounds/click.mp3", "click");
 
 
-var tickloop = createjs.Sound.createInstance("tick");
-tickloop.addEventListener("complete", function (event) {
-    tickloop.play();
+var tickloopSound = createjs.Sound.createInstance("tick");
+tickloopSound.addEventListener("complete", function (event) {
+    tickloopSound.play();
 });
-tickloop.setMute(false);
-tickloop.volume = 0.5;
+tickloopSound.setMute(false);
+tickloopSound.volume = 0.5;
+
+var clickSound = createjs.Sound.createInstance("click");
+clickSound.setMute(false);
+clickSound.volume = 0.5;
 
 function gotBomb() {
-  tickloop.play();
+  tickloopSound.play();
   $(".bomb").show();
   $(".nobomb").hide();
   $(".button_active").show();
@@ -24,7 +28,7 @@ function gotBomb() {
 };
 
 function lostBomb() {
-  tickloop.pause();
+  tickloopSound.pause();
   $(".bomb").hide()
   $(".nobomb").show()
   $(".button_active").hide()
@@ -38,9 +42,7 @@ function registerName() {
 }
 
 function throwBomb() {
-  var instance = createjs.Sound.play("click");
-  instance.setMute(false);
-  instance.volume = 0.5;
+  clickSound.play();
   socket.emit('throwBomb');
   console.log('sent throwBomb')
 }
@@ -86,6 +88,7 @@ $(document).ready( function() {
   });
 
   $(".submit").click( function() {
+    clickSound.play();
     registerName();
   });
 
