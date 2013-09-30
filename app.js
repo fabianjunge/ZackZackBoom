@@ -154,7 +154,7 @@ var startRound = function() {
   console.log(readyPlayers().length);
   // create bomb if more then two players are registered and we don't have a bomb already
   if(readyPlayers().length > 1 && bombs.length == 0) {
-    var ttl = randomFromMinMax(20,40);
+    var ttl = randomFromMinMax(10, 18);
     // create bomb and give to random player
     var player = readyPlayers()[randomFromMinMax(0,readyPlayers().length-1)];
     bombs.push({id: bombs.length, ttl: ttl, handlerId: player.socket.id})
