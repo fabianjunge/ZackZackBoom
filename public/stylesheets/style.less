@@ -14,11 +14,12 @@
 //
 
 body {
-	background-color: @primary;	
+	//background-color: @primary;	
+	background-image: url(../graphics/concrete_wall_@2X.png);
 	margin: 0px;
 	#score_overlay {
 		display: none;
-		background-color: @primary;
+		background-image: url(../graphics/concrete_wall_@2X.png);
 		position: fixed;
 		width: 100%;
 		height: 100%;
@@ -30,6 +31,7 @@ body {
 		h2 {
 			margin-top: 0px;
 			margin-bottom: 6%;
+			text-shadow: 0px 2px 3px black;
 		}
 		img {
 			width: 100%;
@@ -58,11 +60,12 @@ body {
 			}
 		}
 		.button_restart {
-			background-color: @tertiary;
+			background-color: @primary;
 			width: 230px;
 			height: 30px;
 			border: none;
 			text-align: center;
+			.drop-shadow(0, 2px, 3px, 0.5);
 			padding: 20px;
 			.margin-middle;
 			border-color: transparent;
@@ -76,6 +79,7 @@ body {
 				text-decoration: none;
 				text-transform: uppercase;
 				letter-spacing: .2em;
+				line-height: 1.1em;
 				font-size: 1.5em;
 				font-weight: bold;
 			}
@@ -158,16 +162,16 @@ body {
 		}
 
 		.bomb {
-			background-image: url(../graphics/bomb.svg);
+			background-image: url(../graphics/bigbomb.png);
 			background-repeat: no-repeat;
-			background-size: 50%;
+			background-size: 65%;
 			background-position: 12px 0px;
 			margin: 2%;
 			width: 29%;
 			height: 60px;
 			float: right;
 			@media (min-width: @breakpoint) {
-				background-size: 55%;
+				
 				width: 10%;
 				background-position: 0px -2px;
 				height: 80px;
@@ -216,16 +220,23 @@ body {
 				text-align: center;
 				font-weight: bold;
 				.user-select(none);
+				text-shadow: 0px 2px 3px black;
 			}
 		}
 		.button_active {
 			display: none;
-			background-color: @tertiary;
+			background-color: @primary;
+			&:hover {
+				background-color: @secondary;
+			}
 
 		}	
 		.button_inactive {
 			display: block;
 			background-color: @secondary;
+			a {
+				color: @primary !important;
+			}
 		}
 		.button_active, .button_inactive {
 			position: fixed;
@@ -241,12 +252,14 @@ body {
 			border-color: transparent;
 			-webkit-transition: background-color 0.2s;
 			padding-top: 23px;
+			.drop-shadow(0, 2px, 3px, 0.5);
+
 			@media screen and (max-height: @breakpoint-height) {
 				height: 10px;
 				padding-top: 8px;
 			}
 			a {
-				color: @primary;
+				color: @tertiary;
 				.user-select(none);
 				text-decoration: none;
 				text-transform: uppercase;
