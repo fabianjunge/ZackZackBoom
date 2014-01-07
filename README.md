@@ -12,6 +12,6 @@ Was in development at the BremenHack 2013 from 27. to 29. September.
 STAGING
 --------
 
-Check the game: zackzackboom.de:3000
+Check the game: <a href="zackzackboom.de:3000">ZackZackBoom.de</a>
 
 
