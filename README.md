@@ -7,11 +7,7 @@ It is build on top of a node.js webserver and relies heavily on the use of web s
 
 Status
 -------
-Was in development at the BremenHack 2013 from 27. to 29. September.
 
-STAGING
---------
-
-Check the game at zackzackboom.de:3000
+The Webapp is now to be made ​​ready for Firefox OS.
 
 
