@@ -1,0 +1,9 @@
+{
+  "version": "0.1",
+  "name": "ZackZackBoom",
+  "description": "ZackZackBoom is a simple semi-mobile web game that let's you and your friends determine who is the toughest guy when it comes to nerve wracking situations.",
+  "icons": {
+    "128": "../graphics/apple-touch-icon-152x152.png"
+  },
+  "default_locale": "en"
+}

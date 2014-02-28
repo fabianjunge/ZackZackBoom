@@ -1,0 +1,16 @@
+{
+  "version": "0.1",
+  "name": "ZackZackBoom",
+  "description": "ZackZackBoom is a simple semi-mobile web game that let's you and your friends determine who is the toughest guy when it comes to nerve wracking situations.",
+  "icons": {
+  	"16": "http://localhost:3000/graphics/firefox-16.png",
+    "48": "http://localhost:3000/graphics/firefox-60.png",
+    "48": "http://localhost:3000/graphics/firefox-48.png",
+    "128": "http://localhost:3000/graphics/firefox-128.png"
+  },
+    "developer": {
+    "name": "ZackZackBoom - Team",
+    "url": "https://github.com/fabimon/ZackZackBoom"
+  },
+  "default_locale": "en"
+}
