@@ -1,9 +1,13 @@
 {
-  "name": "ZackZackBoom",
-  "version": "0.0.2",
+  "name": "zackzackzoom",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node app.js"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "~10"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
