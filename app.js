@@ -1,14 +1,11 @@
 "use strict"
 
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var routes = require('./routes');
+var errorhandler = require('errorhandler');
 var server = require('http').createServer(app);
-var path = require('path');
 var io = require('socket.io').listen(server);
 var _ = require('underscore');
 
@@ -16,25 +13,17 @@ var _ = require('underscore');
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
-app.use(app.router);
-app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorhandler());
 }
 
 app.get('/', routes.index);
 app.get('/intro', routes.intro);
 
-// app.get('/socket', routes.socket);
 
 var connections = [];
 var players = [];
