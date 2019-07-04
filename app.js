@@ -1,64 +1,52 @@
-"use strict"
+'use strict';
 
 var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+var socketIO = require('socket.io');
 var routes = require('./routes');
-var errorhandler = require('errorhandler');
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
 var _ = require('underscore');
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('public'));
+var PORT = process.env.PORT || 3000;
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(errorhandler());
-}
+var server = express()
+  .use(express.static(__dirname + '/public'))
+  .set('view engine', 'jade')
+  .set('views', __dirname + '/views')
+  .get('/', routes.index)
+  .get('/intro', routes.intro)
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-app.get('/', routes.index);
-app.get('/intro', routes.intro);
-
+var io = socketIO(server);
 
 var connections = [];
 var players = [];
 var bombs = [];
 
-function Player(name, email, socket) {
-  this.name = name;
-  this.email = email;
-  this.socket = socket;
-  this.score = 0;
-  this.state = 'ready';
-}
-
-Player.prototype.addScore = function (amount) {
-  this.score = this.score + amount;
-}
-
-Player.prototype.lost = function () {
-  this.score = this.score - 20;
-}
-
-Player.prototype.setReady = function () {
-  this.state = 'ready';
-}
-
-Player.prototype.setPlaying = function () {
-  this.state = 'playing';
-}
-
-Player.prototype.setUnready = function () {
-  this.state = 'unready';
-}
-
-Player.prototype.isReady = function () {
-  return this.state === 'ready';
+class Player {
+  constructor(name, email, socket) {
+    this.name = name;
+    this.email = email;
+    this.socket = socket;
+    this.score = 0;
+    this.state = 'ready';
+  }
+  addScore(amount) {
+    this.score = this.score + amount;
+  }
+  lost() {
+    this.score = this.score - 20;
+  }
+  setReady() {
+    this.state = 'ready';
+  }
+  setPlaying() {
+    this.state = 'playing';
+  }
+  setUnready() {
+    this.state = 'unready';
+  }
+  isReady() {
+    return this.state === 'ready';
+  }
 }
 
 io.sockets.on('connection', function (socket) {
@@ -111,7 +99,7 @@ io.sockets.on('connection', function (socket) {
 
 });
 
-setInterval(function(){
+setInterval(() =>{
   // calculate bomb ttl
   var bomb_ttl = -1;
   var bomb_holder_name = "none";
@@ -133,13 +121,22 @@ setInterval(function(){
     }
   }
   // inform all players about game state
-  sendAllPlayers('info', { players_cnt: players.length, ready_players_cnt: readyPlayers().length, connections_cnt: connections.length, bombs_cnt: bombs.length, bombs_ttl: bomb_ttl, bomb_holder: bomb_holder_name});
+  sendAllPlayers('info',
+    {
+      players_cnt: players.length,
+      ready_players_cnt: readyPlayers().length,
+      connections_cnt: connections.length,
+      bombs_cnt: bombs.length,
+      bombs_ttl: bomb_ttl,
+      bomb_holder: bomb_holder_name
+    }
+  );
 
   // check if bomb goes boooooooom!
   checkBomb();
 }, 1000);
 
-var startRound = function() {
+var startRound = () => {
   console.log(readyPlayers().length);
   // create bomb if more then two players are registered and we don't have a bomb already
   if(readyPlayers().length > 1 && bombs.length == 0) {
@@ -153,19 +150,19 @@ var startRound = function() {
   }
 }
 
-var readyPlayers = function() {
-  return _.filter(players, function(pl) {
+var readyPlayers = () => {
+  return _.filter(players, (pl) => {
     return pl.isReady();
   });
 }
 
-var sendAllPlayers = function(command, data) {
+var sendAllPlayers = (command, data) => {
   for (var i = 0; i < players.length; i++) {
     players[i].socket.emit(command, data);
   }
 }
 
-var checkBomb = function() {
+var checkBomb = () => {
   if(bombs.length > 0 && bombs[0].ttl < 1) {
     var socket = getSocketById(bombs[0].handlerId)
     if (socket !== undefined) {
@@ -189,8 +186,8 @@ var checkBomb = function() {
   }
 }
 
-var getGameStats = function() {
-  var sortedList = _.sortBy(readyPlayers(), function(pl) {
+var getGameStats = () => {
+  var sortedList = _.sortBy(readyPlayers(), (pl) => {
     return pl.score * -1;
   });
   var pos = 0;
@@ -201,7 +198,7 @@ var getGameStats = function() {
   return gameStatsArray;
 }
 
-var moveBombAwayFrom = function(socket) {
+var moveBombAwayFrom = (socket) => {
   if (bombs.length < 1) {
     console.log("No Bomb in the game!")
     return;
@@ -222,7 +219,7 @@ var moveBombAwayFrom = function(socket) {
   sendAllPlayers('bombMoved', {bomb_holder: victim.name});
 }
 
-var removePlayerBySocketId = function(id) {
+var removePlayerBySocketId = (id) => {
   var pNr = getPlayerNrById(id);
   if (pNr !== undefined) {
     // check if Player has bomb, if so move it
@@ -235,7 +232,7 @@ var removePlayerBySocketId = function(id) {
   }
 }
 
-var removeConnectionById = function(id) {
+var removeConnectionById = (id) => {
   var sNr = getSocketNrById(id);
   if (sNr !== undefined) {
     connections.splice(sNr,1);
@@ -243,17 +240,17 @@ var removeConnectionById = function(id) {
   }
 }
 
-var getPlayerBySocket = function(socket) {
+var getPlayerBySocket = (socket) => {
   if (socket === undefined) return undefined;
   return players[getPlayerNrById(socket.id)];
 }
 
-var getPlayerNameBySocket = function(socket) {
+var getPlayerNameBySocket = (socket) => {
   var pl = getPlayerBySocket(socket);
   if (pl !== undefined) return pl.name;
 }
 
-var getPlayerNrById = function(id) {
+var getPlayerNrById = (id) => {
   console.log("getPlayerNrById(" + id + ")")
   for (var i = 0; i < players.length; i++) {
     if(id == players[i].socket.id) {
@@ -262,7 +259,7 @@ var getPlayerNrById = function(id) {
   }
 }
 
-var getSocketNrById = function(id) {
+var getSocketNrById = (id) => {
   for (var i = 0; i < connections.length; i++) {
     if(id == connections[i].id) {
       return i;
@@ -270,11 +267,11 @@ var getSocketNrById = function(id) {
   }
 }
 
-var getSocketById = function(id) {
+var getSocketById = (id) => {
   return connections[getSocketNrById(id)];
 }
 
-var getRandomPlayerExceptMe = function(socket) {
+var getRandomPlayerExceptMe = (socket) => {
   var victim_nr = randomFromMinMax(0,(readyPlayers().length - 1) - 1);
   var myNr = getPlayerNrById(socket.id);
   console.log('myNr: ' + myNr);
@@ -283,11 +280,8 @@ var getRandomPlayerExceptMe = function(socket) {
   return readyPlayers()[victim_nr];
 }
 
-var randomFromMinMax = function(min, max) {
+var randomFromMinMax = (min, max) => {
   var delta = (max - min) + 1;
   return Math.floor(Math.random() * delta) + min;
 }
 
-server.listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});

@@ -1,7 +1,12 @@
-public/stylesheets/style.css
+# Logs
+logs
+*.log
+npm-debug.log*
+
 .DS_Store
-public/stylesheets/style.css
 
-public/stylesheets/style.css
+# Dependency directories
+node_modules
 
-node_modules/
+# Optional npm cache directory
+.npm
